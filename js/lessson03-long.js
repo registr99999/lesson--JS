@@ -1,5 +1,9 @@
+'use strict';
+
 let lang = prompt('Введите ваше язык "ru" или "en"');
-/*
+
+const langs = ['ru', 'en'];
+
 if (lang === 'ru') {
     console.log('понедельник, вторник, среда, четверг, пятница, суббота, воскресение');
 } else if (lang === 'en') {
@@ -15,22 +19,20 @@ switch (true) {
     case lang === 'en':
         console.log('Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday');
         break;
-        default console.log('Вы ввели неверное значение'); :
-        break;
+
 }
- */
 
-var arr = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
+
+let week = [
+    ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресение'],
+    ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
 ];
-console.log(arr[lang]);
+console.log(week[langs.indexOf(lang)]);
 
 
 
-/* let namePerson = prompt('Введите ваше имя!');
+ let namePerson = prompt('Введите ваше имя!');
 
-namePerson === 'Артем' ? console.log('Директор') : namePerson === 'Максим' ? console.log('Преподаватель') : console.log('Студент'); */
+namePerson === 'Артем' ? console.log('Директор') : namePerson === 'Максим' ? console.log('Преподаватель') : console.log('Студент'); 
 
 
