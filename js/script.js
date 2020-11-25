@@ -1,7 +1,7 @@
 'use strict';
 // Получение элементов со страницы и объявление переменных
-let inNumber = function(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n)
+let inNumber = function (n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
 };
 let money;
 let income = 'разработка приложения на JS';
@@ -11,15 +11,18 @@ let mission = 1000000;
 let period = 6;
 let sum = 0;
 
-let start = function() {
-    
-    do {
-        money = prompt('Ваш месячный доход?');
-    }
-    while (!inNumber(money))
+const numPrompt = (title) => {
+    let value = 0; 
 
-};
-start();
+    do {
+        value = prompt(title)
+    } while (!inNumber(value))
+    
+    return value
+}
+
+money = numPrompt('Ваш месячный доход?')
+
 /* const getExpanse = () => {
     const target = +prompt('Введите обязательную статью расходов 😍?');
     const value = +prompt('Введите размер расходов?');
@@ -33,14 +36,17 @@ const getExpensesMonth = (count = 2) => {
     }
 }
  */
-let expenses = [];
+
 let getExpensesMonth = function () {
     let sum = 0;
+    let expenses = [];
+
     for (let i = 0; i < 2; i++) {
         expenses[i] = prompt('Введите обязательную статью расходов?');
-
-        sum += +prompt('Во сколько это обойдется?');
+        sum += numPrompt('Размер расходов?')
+        
     }
+
     return sum;
 };
 
@@ -101,5 +107,10 @@ switch (true) {
 //------------------------------------------------------------------------------------------------------------------------
 // ВЫВОД В КОНСОЛЬ
 
+const targetMonth = Math.ceil(getTargetMonth())
+
 console.log(addExpenses.toLowerCase().split(', '));// надо оставить
-console.log('цель будет достигнута через: ' + Math.ceil(getTargetMonth()) + ' месяцев');
+
+console.log(targetMonth
+    ? `цель будет достигнута через: ${targetMonth} месяцев`
+    : 'Цель не будет достигнута');
