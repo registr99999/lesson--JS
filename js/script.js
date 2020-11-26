@@ -21,7 +21,7 @@ const numPrompt = (title) => {
     return value
 }
 
-money = numPrompt('Ваш месячный доход?')
+money = +numPrompt('Ваш месячный доход?')
 
 /* const getExpanse = () => {
     const target = +prompt('Введите обязательную статью расходов 😍?');
@@ -43,7 +43,7 @@ let getExpensesMonth = function () {
 
     for (let i = 0; i < 2; i++) {
         expenses[i] = prompt('Введите обязательную статью расходов?');
-        sum += numPrompt('Размер расходов?')
+        sum += +numPrompt('Размер расходов?')
         
     }
 
@@ -52,7 +52,7 @@ let getExpensesMonth = function () {
 
 let expensesAmount = getExpensesMonth();
 
-console.log('Сумма всех расходов замесяц: ' + expensesAmount);
+console.log('Сумма всех расходов замесяц: ' + +expensesAmount);
 
 let getAccumulatedMonth = () => money - sum;
 
