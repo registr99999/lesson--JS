@@ -1,15 +1,16 @@
 'use strict';
 
-let money;
-let start = function () {
+let money = checkNaN('Ваш месячный доход?');
+function checkNaN (a) {
+    let res;
     do {
-        money = +prompt('Ваш месячный доход?');
+        res = prompt(a);
     }
-    while (isNaN(money) || money ==='' || money === null)
-};
-start();
-console.log(typeof money);
+    while (isNaN(res) || res ==='' || res === null)
+    return Number(res);
+}
 
+console.log(typeof money);
 
 let appData = {
     income: {},
@@ -17,9 +18,19 @@ let appData = {
     expenses: {},
     addExpenses: [],
     deposit: false,
+    percentDeposit: 0,
+    moneyDeposit: 0,
     mission: 50000,
     period: 3,
     asking: function () {
+
+        if (confirm('Если у вас дополнительный источник зароботка?')) {
+            let itemIncome = prompt('какой у вас есть дополнительный заработок?', 'разработка приложений на JS');
+            
+            let cashIncome = checkNaN('Cколько в месяц вы на этом зарабатываете?');
+            appData.income[itemIncome] = cashIncome;
+        }
+
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
         appData.addExpenses = addExpenses.toLowerCase().split(', ');
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
@@ -27,26 +38,29 @@ let appData = {
         let expenses = [];
         for (let i = 0; i < 2; i++) {
             expenses[i] = prompt('Введите обязательную статью расходов?');
-            function checkForNumber () {
-                do {
-                    sum = prompt('Размер расходов?');
-                }
-                while (isNaN(sum) || sum === '' || sum === null)
-            };
-            checkForNumber();
-            console.log(typeof checkForNumber);
+            let sum = checkNaN('Размер расходов?');
             appData.expenses[expenses[i]] = +sum;
         }
-        
     },
     budget: money,
     getBudget: 0,
     budgetMonth: 0,
     expensesMonth: 0,
     budgetDay: 0,
+    getInfoDeposit: function(){
+        if (appData.deposit) {
+            appData.percentDeposit = checkNaN('Какой годовой процент?');
+            appData.moneyDeposit = checkNaN('Какая сумма заложена?');
+        }
+        return appData.deposit;
+    },
+    calcSavedMoney: function(){
+        return Number(appData.getBudget * appData.period);
+    }
 };
 appData.asking();
 console.log(appData);
+appData.getInfoDeposit();
 
 // Получение элементов со страницы и объявление переменных
 let inNumber = function (n) {
@@ -128,3 +142,4 @@ for (let key in appData) {
     console.log('Наша программа включает в себя данные:' + 'свойства ' + key + ' их значения ' + appData);
 
 }
+console.log(appData.addExpenses.map(word => word[0].toUpperCase() + word.substring(1)).join(', '));
