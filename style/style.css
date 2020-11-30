@@ -1,0 +1,22 @@
+body {
+    background: #c4c4c4;
+}
+.wrapper {
+    width: 100%;
+}
+.first-block {
+    max-width: 1000px;
+    margin: 0px auto;
+}
+.first-block__title {
+    font-size: 40px;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+}
+.first-block__subtitle {
+    font-size: 20px;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+}
