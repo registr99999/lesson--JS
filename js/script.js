@@ -1,11 +1,11 @@
 'use strict';
 
-let money = 0;
+let money;
 let start = function () {
     do {
         money = +prompt('Ваш месячный доход?');
     }
-    while (isNaN(money) || money === '' || money === null)
+    while (isNaN(money) || money ==='' || money === null)
 };
 start();
 
@@ -21,16 +21,21 @@ let appData = {
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
         appData.addExpenses = addExpenses.toLowerCase().split(', ');
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
-        let sum = 0;
+        let sum;
         let expenses = [];
         for (let i = 0; i < 2; i++) {
             expenses[i] = prompt('Введите обязательную статью расходов?');
-            sum = +prompt('Размер расходов?')
+            function checkForNumber () {
+                do {
+                    sum = prompt('Размер расходов?');
+                }
+                while (isNaN(sum) || sum === '' || sum === null)
+            };
+            checkForNumber();
+            
             appData.expenses[expenses[i]] = +sum;
-
-
         }
-        return sum;
+        
     },
     budget: money,
     getBudget: 0,
