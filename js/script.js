@@ -8,6 +8,8 @@ let start = function () {
     while (isNaN(money) || money ==='' || money === null)
 };
 start();
+console.log(typeof money);
+
 
 let appData = {
     income: {},
@@ -32,7 +34,7 @@ let appData = {
                 while (isNaN(sum) || sum === '' || sum === null)
             };
             checkForNumber();
-            
+            console.log(typeof checkForNumber);
             appData.expenses[expenses[i]] = +sum;
         }
         
