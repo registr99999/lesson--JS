@@ -1,5 +1,26 @@
 'use strict';
 
+const buttonCalc = document.getElementById('start'),
+    buttonPlusOne = document.getElementsByTagName('button'),
+    buttonPlusTwo = document.getElementsByTagName('button'),
+    buttonCheckbox = document.getElementById('deposit-check'),
+    inputText = document.querySelectorAll('additional_income-item'),
+    resultDayValue = document.getElementsByClassName('budget_day-value'),
+    expensesMonthValue = document.getElementsByClassName('expenses_month-value'),
+    additionalIncomeValue = document.getElementsByClassName('additional_income-value'),
+    additionalExpensesValue = document.getElementsByClassName('additional_expenses-value'),
+    incomePeriodValue = document.getElementsByClassName('income_period-value'),
+    targetMonthValue = document.getElementsByClassName('target_month-value'),
+    salaryAmount = document.querySelector('.salary-amount'),
+    incomeTitle = document.querySelector('.income-title'),
+    incomeAmount = document.querySelector('.income-amount'),
+    additionalIncomeItem = document.querySelector('.additional_income-item'),
+    additionalExpensesItem = document.querySelector('.additional_expenses-item'),
+    depositCheck = document.querySelector('#deposit-check'),
+    depositAmount = document.querySelector('.deposit-amount'),
+    depositPercent = document.querySelector('.deposit-percent'),
+    targetAmount = document.querySelector('.target-amount'),
+    periodSelect = document.querySelector('.period-select');
 let money = checkNaN('Ваш месячный доход?');
 function checkNaN (a) {
     let res;
