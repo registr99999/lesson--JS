@@ -12,10 +12,10 @@ let buttonCalc = document.getElementById('start'),
     incomePeriodValue = document.getElementsByClassName('income_period-value')[0],
     targetMonthValue = document.getElementsByClassName('target_month-value')[0],
     salaryAmount = document.querySelector('.salary-amount'),
-    incomeTitle = document.querySelector('.income-title'),
+    incomeTitle = document.querySelectorAll('.income-title')[1],
     incomeAmount = document.querySelector('.income-amount'),
     expensesAmount = document.querySelector('.expenses-amount'),
-    expensesTitle = document.querySelector('.expenses-title'),
+    expensesTitle = document.querySelectorAll('.expenses-title')[1],
     additionalIncomeItem = document.querySelector('.additional_income-item'),
     additionalExpensesItem = document.querySelector('.additional_expenses-item'),
     depositCheck = document.querySelector('#deposit-check'),
@@ -151,6 +151,9 @@ let appData = {
             periodAmount.textContent = periodSelectValue + ' месяцев';
         }
         targetMonthValue.value = periodSelectValue;
+        periodSelectValue.addEventListener('chenge', function(){
+            appData.budgetMonth * targetMonthValue.value;
+        });
         return periodSelectValue;
     },
     getTargetMonth: function () {
@@ -206,6 +209,7 @@ let falseInputValue = function () {
     });
 };
 
+falseInputValue();
 
 function validFormNumber(a) {
     a.addEventListener('keyup', function (){
@@ -222,12 +226,13 @@ validFormNumber(incomeAmount);
 validFormNumber(expensesAmount);
 validFormNumber(salaryAmount);
 validFormNumber(targetAmount);
-validFormNumber(incomeTitle);
 
 
-validFormString(additionalIncomeItem);
+validFormString(incomeTitle);
+
 validFormString(additionalExpensesItem);
 validFormString(expensesTitle);
+
 
 periodSelect.addEventListener('click', appData.getPeriodSelect);
 buttonPlusOne.addEventListener('click', appData.addIncomeBlock);
