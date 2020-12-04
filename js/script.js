@@ -15,6 +15,7 @@ let buttonCalc = document.getElementById('start'),
     incomeTitle = document.querySelector('.income-title'),
     incomeAmount = document.querySelector('.income-amount'),
     expensesAmount = document.querySelector('.expenses-amount'),
+    expensesTitle = document.querySelector('.expenses-title'),
     additionalIncomeItem = document.querySelector('.additional_income-item'),
     additionalExpensesItem = document.querySelector('.additional_expenses-item'),
     depositCheck = document.querySelector('#deposit-check'),
@@ -26,7 +27,7 @@ let buttonCalc = document.getElementById('start'),
     incomeItems = document.querySelectorAll('.income-items'),
     periodAmount = document.querySelector('.period-amount');
 
-
+    
 
 let appData = {
     budget: 0,
@@ -213,15 +214,20 @@ function validFormNumber(a) {
 }
 function validFormString(a) {
     a.addEventListener('keyup', function (){
-        this.value = this.value.replace(/^[а-яА-ЯёЁ]+$/g, '');
+        this.value = this.value.replace(/[a-zA-Z]+$/g, '');
     });
 }
 
 validFormNumber(incomeAmount);
 validFormNumber(expensesAmount);
-validFormString(salaryAmount);
+validFormNumber(salaryAmount);
 validFormNumber(targetAmount);
 validFormNumber(incomeTitle);
+
+
+validFormString(additionalIncomeItem);
+validFormString(additionalExpensesItem);
+validFormString(expensesTitle);
 
 periodSelect.addEventListener('click', appData.getPeriodSelect);
 buttonPlusOne.addEventListener('click', appData.addIncomeBlock);
