@@ -21,7 +21,6 @@ let buttonCalc = document.getElementById('start'),
     additionalIncomeItem00 = document.querySelectorAll('.additional_income-item')[0],
     additionalIncomeItem01 = document.querySelectorAll('.additional_income-item')[1],
     additionalExpensesItem = document.querySelector('.additional_expenses-item'),
-    depositCheck = document.querySelector('#deposit-check'),
     expensesItems = document.querySelectorAll('.expenses-items'),
     depositAmount = document.querySelector('.deposit-amount'),
     depositPercent = document.querySelector('.deposit-percent'),
@@ -61,18 +60,66 @@ let appData = {
         appData.showResult();
         appData.blockActivInput();
     },
-    reset: function(){
+    reset: function () {
+        appData.inputValidation();
         let allInput = document.getElementsByTagName('input');
         for (let index = 0; index < allInput.length; index++) {
-            allInput[index].value = '';
+            allInput[index].value = null;
         }
-        buttonCalc.style.display = 'block';
-        buttonReset.style.display = 'none';
+        falseInputValue();
         incomeTitle.removeAttribute('disabled', 'disabled');
         additionalIncomeItem00.removeAttribute('disabled', 'disabled');
         additionalIncomeItem01.removeAttribute('disabled', 'disabled');
         expensesTitle.removeAttribute('disabled', 'disabled');
-        additionalExpensesItem.removeAttribute('disabled', 'disabled');
+        additionalExpensesItem.removeAttribute('disabled', 'disabled');   
+        buttonCheckbox.checked = false;
+        appData.removeBlockIncome();
+        appData.removeButtonIncome();
+        appData.removeBlockExpenses();
+        appData.removeButtonExpenses();
+        periodSelect.value = 1;
+        periodAmount.textContent = 1;
+        buttonReset.style.display = 'none';
+        buttonCalc.style.display = 'block';
+        
+    },
+    inputValidation: function() {
+        salaryAmount.addEventListener('input', function () {
+            if (salaryAmount.value === '') {
+                buttonCalc.setAttribute('disabled', 'disabled');
+            } else {
+                buttonCalc.removeAttribute('disabled');
+            }
+        });
+        
+    },
+    removeBlockIncome: function () {
+        let blockIncome = document.querySelectorAll('.income-items');
+        for (let index = 1; index < blockIncome.length; index++) {
+            blockIncome[index].remove();
+        }
+
+    },
+    removeButtonIncome: function () {
+        let blockIncome = document.querySelectorAll('.income-items');
+        buttonPlusOne.style.display = 'block';
+        if (blockIncome.length === 3) {
+            buttonPlusOne.style.display = 'none';
+        }
+    },
+    removeBlockExpenses: function () {
+        let blockExpenses = document.querySelectorAll('.expenses-items');
+        for (let index = 1; index < blockExpenses.length; index++) {
+            blockExpenses[index].remove();
+        }
+
+    },
+    removeButtonExpenses: function () {
+        let blockExpenses = document.querySelectorAll('.expenses-items');
+        buttonPlusTwo.style.display = 'block';
+        if (blockExpenses.length === 3) {
+            buttonPlusTwo.style.display = 'none';
+        }
     },
     blockActivInput: function () {
         incomeTitle.setAttribute('disabled', 'disabled');
@@ -82,6 +129,7 @@ let appData = {
         additionalExpensesItem.setAttribute('disabled', 'disabled');
         buttonCalc.style.display = 'none';
         buttonReset.style.display = 'block';
+
     },
 
     showResult: function () {
@@ -100,7 +148,7 @@ let appData = {
         for (let i = 0; i < controls.length; i++) {
             controls[i].value = null;
         }
-
+        console.log(this);
         incomeItems[0].parentNode.insertBefore(clonedExpensesIncome, buttonPlusOne);
 
         incomeItems = document.querySelectorAll('.income-items');
@@ -108,7 +156,6 @@ let appData = {
         if (incomeItems.length === 3) {
             buttonPlusOne.style.display = 'none';
         }
-
     },
     addExpensesBlock: function () { // добавление полей обязательные расходы
         const clonedExpensesItem = expensesItems[0].cloneNode(true);
@@ -225,7 +272,6 @@ let appData = {
 
 
 buttonReset.addEventListener('click', appData.reset.bind(appData))
-    
 
 
 buttonCalc.addEventListener('click', appData.start.bind(appData));
@@ -233,7 +279,7 @@ buttonCalc.addEventListener('click', appData.start.bind(appData));
 
 buttonCalc.setAttribute('disabled', 'disabled');
 
-let falseInputValue = function () {
+function falseInputValue() {
     salaryAmount.addEventListener('input', function () {
         if (salaryAmount.value === '') {
             buttonCalc.setAttribute('disabled', 'disabled');
@@ -266,7 +312,7 @@ validFormNumber(targetAmount);
 
 
 periodSelect.addEventListener('change', appData.handlePeriodChange);
-buttonPlusOne.addEventListener('click', appData.addIncomeBlock);
+buttonPlusOne.addEventListener('click', appData.addIncomeBlock.bind(appData));
 buttonPlusTwo.addEventListener('click', appData.addExpensesBlock);
 
 
