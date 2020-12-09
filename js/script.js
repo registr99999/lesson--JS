@@ -338,3 +338,4 @@ buttonPlusTwo.addEventListener('click', appData.addExpensesBlock);
 /* for (let key in appData) {
     console.log('Наша программа включает в себя данные:' + 'свойства ' + key + ' их значения ' + appData);
 } */
+

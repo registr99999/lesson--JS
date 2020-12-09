@@ -45,6 +45,10 @@ const AppData = function () {
     this.moneyDeposit = 0;
 };
 
+const appData = new AppData();
+
+console.log(appData);
+
 AppData.prototype.check = function () {
     salaryAmount.addEventListener('input', function () {
         if (salaryAmount.value === '') {
@@ -54,9 +58,7 @@ AppData.prototype.check = function () {
         }
     });
 };
-
 AppData.prototype.start = function () {
-    this.check();
     this.budget = +salaryAmount.value;
     this.getExpenses();
     this.getIncome();
@@ -69,14 +71,8 @@ AppData.prototype.start = function () {
     this.getAddExpenses();
     this.getAddIncome();
     this.showResult();
-    this.blockActivInput();
+    this.blockActivInput();  
 };
-
-const appData = new AppData();
-
-console.log(appData);
-
-
 AppData.prototype.showResult = function () {
     budgetMonthValue.value = this.budgetMonth;// вывод значения в поле Доход за месяц
     budgetDayValue.value = this.budgetDay;// вывод значения в поле Дневной бюджет
@@ -323,7 +319,7 @@ validFormNumber(expensesAmount);
 validFormNumber(salaryAmount);
 validFormNumber(targetAmount);
 
-function falseInputValue () {
+let falseInputValue = function() {
     salaryAmount.addEventListener('input', function () {
         if (salaryAmount.value === '') {
             buttonCalc.setAttribute('disabled', 'disabled');
@@ -331,7 +327,7 @@ function falseInputValue () {
             buttonCalc.removeAttribute('disabled');
         }
     });
-}
+};
 
 falseInputValue();
 
@@ -341,3 +337,4 @@ falseInputValue();
 periodSelect.addEventListener('change', appData.handlePeriodChange);
 buttonPlusOne.addEventListener('click', appData.addIncomeBlock.bind(appData));
 buttonPlusTwo.addEventListener('click', appData.addExpensesBlock);
+ 
