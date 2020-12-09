@@ -48,9 +48,9 @@ let appData = {
     start: function () {
         falseInputValue();
         appData.budget = +salaryAmount.value;
-        appData.getExpenses();
+        this.getExpenses();
         appData.getIncome();
-        appData.getExpensesMonth();
+        this.getExpensesMonth();
         appData.getIncomeMonth();
         appData.getBudget();
         appData.calcPeriod();
