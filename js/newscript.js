@@ -203,11 +203,8 @@ AppData.prototype.getInfoDeposit = function () {
             this.percentDeposit = prompt('Какой годовой процент?', 10);
         }
         while (!isNumber(this.percentDeposit));
-
-
         do {
             this.moneyDeposit = prompt('Какая сумма заложена?', 10000);
-
         }
         while (!isNumber(this.moneyDeposit));
     }
@@ -261,10 +258,10 @@ AppData.prototype.reboot = function () {
 };
 
 AppData.prototype.addEvent = function () {
-    start.addEventListener('click', appData.start.bind(appData));
-    btnExpenses.addEventListener('click', appData.addExpensesBlock);
-    btnIncome.addEventListener('click', appData.addIncomeBlock);
-    cancel.addEventListener('click', appData.reboot.bind(appData));
+    start.addEventListener('click', this.start.bind(this));
+    btnExpenses.addEventListener('click', this.addExpensesBlock);
+    btnIncome.addEventListener('click', this.addIncomeBlock);
+    cancel.addEventListener('click', this.reboot.bind(this));
     periodSelect.addEventListener('click', function () {
         titlePeriodAmount.innerHTML = periodSelect.value;
     });
