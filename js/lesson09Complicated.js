@@ -1,8 +1,21 @@
 'use strict';
-/* 
-const month = [
+
+const date = new Date();
+const inDateWayOne = document.querySelector('.block__dateone');
+const inDateWayTwo = document.querySelector('.block__datetwo');
+let dey,
+  month;
+
+let getHourse = date.getHours();
+let getMinets = date.getMinutes();
+let getSeconds = date.getSeconds();
+
+
+
+const getDateArr = {
+  month: [
     'Января',
-    'февраля',
+    'Февраля',
     'Марта',
     'Апреля',
     'Мая',
@@ -13,108 +26,53 @@ const month = [
     'Октября',
     'Ноября',
     'Декабря'
-];
-const days = [
-    'Воскресенье',
+  ],
+  week: [
     'Понедельник',
     'Вторник',
     'Среда',
     'Четверг',
     'Пятница',
-    'Суббота'
-];
-
-const date = new Date();
-
-let currentDay = date.getDay();
-let currentMonth = date.getMonth();
-var intervalID = window.setInterval(inputDateFormatA, 1000);
-
-let inputDateFormatA = function (res) {
-    if (res === days) {
-        res = res[currentDay];
-        let currentHours = date.getHours();
-        let currentMinutes = date.getMinutes();
-        let currentSeconds = date.getSeconds();
-    }
-    if (res === month) {
-        res = res[currentMonth];
-        let currentHours = date.getHours();
-        let currentMinutes = date.getMinutes();
-        let currentSeconds = date.getSeconds();
-    }
-
-    return res;
+    'Суббота',
+    'Воскресение'
+  ]
+}
+function addZero(item) {
+  if (item.length < 2) {
+    item = '0' + item;
+  }
+  return item;
 }
 
-console.log(inputDateFormatA.currentHours);
-const inputDateFormatB = function (a) {
 
-    let result;
-    if (String(a).length < 2) {
-        result = '0' + a;
-    } else {
-        result = a;
-    }
-    if (String(a).length < 2) {
-        result = '0' + a;
-    } else {
-        result = a;
-    }
-    return result;
+const getDateValue = () => {
+  for (let key in getDateArr.month) {
+    let getMonth = String(date.getMonth());
+    key === getMonth ? month = getDateArr.month[key] : ''
+  }
 }
-
-inputDateFormatB(currentDay);
-inputDateFormatB(currentMonth);
-
-console.log(inputDateFormatB(currentMonth) + ' ' + inputDateFormatB(currentDay));
-
-
-console.log('Сегодня ' + inputDateFormatA(days), + ' ' + date.getDate() + ' ' + inputDateFormatA(month) + ' ' + date.getFullYear() + ' ' + 'года, ' + ' ' + date.getHours() + ' ' + 'час(ов)' + ' ' + date.getMinutes() + ' ' + 'минут(ы)' + ' ' + date.getSeconds() + ' ' + 'секунд(ы)'); */
-
-let datetime = {
-
-    month: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'],
-
-    day: ['Воскрсенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-
-    show: function (node) {
-
-        let _this = this;
-
-        setInterval(function () {
-
-            let date = new Date();
-            function declensionOfWords(a) {
-                let result;
-                let с = [2, 3, 4, 22, 23, 24];
-                if (a === 1 || a === 21 || a === 31 || a === 41 || a === 51) {
-                    result = 'секунда';
-                } else if ( 
-                    for (let index = 0; index < с.length; index++) {
-                        let res = c[i];
-                        console.log(c[i]);
-
-                    }
-                )
-        {
-            result = 'секунды';
-        } else {
-            result = 'секунд';
-        } 
-                return result;
+for (let key in getDateArr.week) {
+  let getDate = String(date.getDay());
+  key === getDate ? dey = getDateArr.week[key] : ''
 }
+getDateValue();
 
-node.innerHTML = ['сегодня: ' + _this.day[date.getDay()], ', ', date.getDate(), ' ', _this.month[date.getMonth()], ' ', date.getFullYear() + ' года' + ' ' + date.getHours() + ' ' + 'час(ов)' + ' ' + date.getMinutes() + ' ' + 'минут(ы)' + ' ' + date.getSeconds() + ' ' + declensionOfWords(date.getSeconds())].join('');
 
-        }, 1000);
-        
-        
-    }
-};
+setInterval(function () {
+  let date = new Date();
+  getHourse = String(date.getHours());
+  getMinets = String(date.getMinutes());
+  getSeconds = String(date.getSeconds());
 
-window.onload = function () {
 
-    datetime.show(document.getElementById('date'));
+  let words;
+  function declOfNum(number, words) {
+    return words[(number % 100 > 4 && number % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(number % 10 < 5) ? number % 10 : 5]];
+  }
 
-};
+
+
+  inDateWayOne.innerHTML = `Сегодня:${dey}, ${date.getDate()} ${month} ${date.getFullYear()} года, ${addZero(getHourse)} ${declOfNum(getMinets, ['час', 'часа', 'часов'])} ${addZero(getMinets)} ${declOfNum(getMinets, ['минуа', 'минуты', 'минут'])} ${addZero(getSeconds)} ${declOfNum(getSeconds, ['секунда', 'секунды', 'секунд'])}`;
+  inDateWayTwo.innerHTML = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} - ${addZero(getHourse)}:${addZero(getMinets)}:${addZero(getSeconds)}`;
+
+}, 1000);
