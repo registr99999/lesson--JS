@@ -2,8 +2,8 @@
 
 function DomElement(selector, height, width, bg, fontSize) {
     this.selector = selector;
-    this.height = '100px';
-    this.width = '100px';
+    this.height = 100;
+    this.width = 100;
     this.top = '200px';
     this.left = '600px';
     this.bg = '#33360b';
@@ -17,17 +17,27 @@ let elementDiv = new DomElement();
 elementDiv.creatElement = function () {
     let question = prompt('введите пожалуйста . или #');
     let newElem;
-    if (question.slice(0, 1) === '.') {
+    if (question.slice(0, 1) === '.' || question === '.') {
         newElem = document.createElement('div');
         document.body.appendChild(newElem);
-        newElem.classList.add(question.slice(1));
-        newElem.style.cssText = `position:${this.position}; background:${this.bg}; width:${this.width}; left:${this.left}; top:${this.top}; transform:${this.transform}; height:${this.height}; display: flex; align-items: center; justify-content: center; color: white;`;
+        if (question.length === 1) {
+            newElem.classList.add('newClass');
+        } else {
+            newElem.classList.add(question.slice(1));
+        }
+        console.log(newElem);
+        newElem.style.cssText = `positi.on:${this.position}; background:${this.bg}; width:${this.width}; left:${this.left}; top:${this.top}; transform:${this.transform}; height:${this.height}; display: flex; align-items: center; justify-content: center; color: white;`;
         newElem.textContent = 'вы создали тег: DIV';
 
     } else if (question.slice(0, 1) === '#') {
         newElem = document.createElement('p');
         document.body.appendChild(newElem);
-        newElem.id = question.slice(1);
+        if (question.length === 1) {
+            newElem.classList.add('newClass');
+        } else {
+            newElem.classList.add(question.slice(1));
+        }
+        console.log(newElem);
         newElem.style.cssText = `background:${this.bg}; width:${this.width}; height:${this.height}; display: flex; align-items: center; justify-content: center; color: white;`;
         newElem.textContent = `вы создали тег: P`;
     }
@@ -38,11 +48,11 @@ elementDiv.creatElement = function () {
         let myWidth = window.innerWidth;
         let myHeight = window.innerHeight;
         let stylesElementEvent = `transition: all .3s ease; position:${this.position}; background:red; width:${this.width}; left:${this.left}; top:${this.top}; transform:${this.transform}; height:${this.height}; display: flex; align-items: center; justify-content: center; color: white;`;
-        let stylesElement = `transition: all .3s ease; position:${this.position}; background:red; width:${this.width}; left:${this.left}; top:${this.top}; transform:${this.transform}; height:${this.height}; display: flex; align-items: center; justify-content: center; color: white;`;
+        let stylesElement = `transition: all .3s ease; position:${this.position}; background:green; width:${this.width}; left:${this.left}; top:${this.top}; transform:${this.transform}; height:${this.height}; display: flex; align-items: center; justify-content: center; color: white;`;
         if (keyName === 37) {
             if (left === 0) {
                 newElem.style.cssText = stylesElementEvent;
-                retutn;
+                return;
             }
             left -= 10;
             this.left = left + 'px';
