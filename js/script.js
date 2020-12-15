@@ -1,20 +1,20 @@
 window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он дожидает загрузки только дом дерева
   'use strict';
 
-  // Timer
+  // -------------------------------------------   Timer   ------------------------------------------------
   function countTimer(dedline) { // dedline это время до которого наш таймер будет расчитаывть
     let timerHourse = document.querySelector('#timer-hours'), // получаем часы
       timerMinutes = document.querySelector('#timer-minutes'),// получаем минуты
       timerSeconds = document.querySelector('#timer-seconds');// получаем секунды
-    
-    function addZero(item) {
+
+    const addZero = (item) => {
       if (item < 10) {
         item = '0' + item;
       }
       return item;
     }
 
-    function getTimeRemaining() {
+    const getTimeRemaining = () => {
       let dateStop = new Date(dedline), // получаем дату окончания
         dateNow = new Date(),// получаем текущую дату
         timeRemaining = (dateStop - dateNow) / 1000,
@@ -24,7 +24,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
       return { timeRemaining, hours, minutes, seconds };
     }
 
-    function updateClock() {
+    const updateClock = () => {
       let timer = getTimeRemaining();
       timerHourse.textContent = addZero(timer.hours);
       timerMinutes.textContent = addZero(timer.minutes);
@@ -41,4 +41,62 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
     updateClock();
   }
   countTimer('2021-10-31');
+
+  // -------------------------------------------   menu   ------------------------------------------------
+  const toggleMenu = () => {
+    const btnMenu = document.querySelector('.menu'),
+      menu = document.querySelector('menu'),
+      btnClose = document.querySelector('.close-btn'),
+      menuItems = menu.querySelectorAll('ul>li');
+
+    const handlerMenu = () => {
+      menu.classList.toggle('active-menu');
+    };
+
+    btnMenu.addEventListener('click', handlerMenu);
+
+    btnClose.addEventListener('click', handlerMenu);
+
+    menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
+  }
+  toggleMenu();
+
+
+  // -------------------------------------------   popup   ------------------------------------------------
+
+  const togglePopUp = () => {
+    const popup = document.querySelector('.popup'),
+      popupBtn = document.querySelectorAll('.popup-btn'),
+      popupClose = document.querySelector('.popup-close'),
+      popupContent = document.querySelector('.popup-content');
+    popupBtn.forEach((item) => {
+      item.addEventListener('click', () => {
+        let width = window.innerWidth;
+        popup.style.cssText = 'display:block;';
+        console.log(width);
+        
+        if (width > 768) {
+          let top = -100;
+          popupContent.style.top = `${top}%`;
+          
+          setInterval(() => {
+            top += 1.1;
+            if (top <= 10) {
+              popupContent.style.top = `${top}%`;
+              console.log(top);
+            } else {
+              clearInterval();
+            }
+          }, 10);
+        }
+        
+      });
+    });
+    popupClose.addEventListener('click', () => {
+
+      popup.style.cssText = 'display:none;';
+    });
+  };
+
+  togglePopUp();
 });
