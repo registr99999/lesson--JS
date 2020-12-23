@@ -412,28 +412,104 @@
 			</div>
 		</div>
 	</div>
+
+	<script src="js/script.js"></script>
+	<script src="js/validator/validatorForm.js"></script>
 	<script>
-		const valid = new Validator({
-			selector: '#myForm',
+		const form1 = new Validator({
+			selector: '#form1',
 			pattern: {
-				phone: /^\d+$/
+				phone: /^\d+$/,
+				name: /[^0-9]/,
+				email: /^\w+@\w+\.\w{2,}$/
 			},
 			method: {
-				'phone': [
+				'form1-name': [
+					['notEmpty'],
+					['pattern', 'name']
+				],
+				'form1-phone': [
 					['notEmpty'],
 					['pattern', 'phone']
 				],
-				'email': [
+				'form1-email': [
 					['notEmpty'],
 					['pattern', 'email']
 				]
-
 			}
 		});
-		valid.init();
+		form1.init();
+		const form2 = new Validator({
+			selector: '#form2',
+			pattern: {
+				phone: /^\d+$/,
+				name: /[^0-9]/,
+				email: /^\w+@\w+\.\w{2,}$/
+			},
+			method: {
+				'form2-name': [
+					['notEmpty'],
+					['pattern', 'name']
+				],
+				'form2-phone': [
+					['notEmpty'],
+					['pattern', 'phone']
+				],
+				'form2-email': [
+					['notEmpty'],
+					['pattern', 'email']
+				]
+			}
+		});
+		form2.init();
+		const form3 = new Validator({
+			selector: '#form3',
+			pattern: {
+				phone: /^\d+$/,
+				name: /[^0-9]/,
+				email: /^\w+@\w+\.\w{2,}$/
+			},
+			method: {
+				'form1-name': [
+					['notEmpty'],
+					['pattern', 'name']
+				],
+				'form1-phone': [
+					['notEmpty'],
+					['pattern', 'phone']
+				],
+				'form1-email': [
+					['notEmpty'],
+					['pattern', 'email']
+				],
+				'form2-name': [
+					['notEmpty'],
+					['pattern', 'name']
+				],
+				'form2-phone': [
+					['notEmpty'],
+					['pattern', 'phone']
+				],
+				'form2-email': [
+					['notEmpty'],
+					['pattern', 'email']
+				],
+				'form3-name': [
+					['notEmpty'],
+					['pattern', 'name']
+				],
+				'form3-phone': [
+					['notEmpty'],
+					['pattern', 'phone']
+				],
+				'form3-email': [
+					['notEmpty'],
+					['pattern', 'email']
+				],
+			}
+		});
+		form3.init();
 	</script>
-	<script src="js/script.js"></script>
-	<script src="js/validator/validatorForm.js"></script>
 </body>
 
 </html>

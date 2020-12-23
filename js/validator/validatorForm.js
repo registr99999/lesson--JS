@@ -4,7 +4,7 @@
 class Validator {
     constructor({ selector, pattern = {}, method }) {
         this.form = document.querySelector(selector); // это селектор нашей формы может быть id ibput и тд
-        this.pattern = pattern; // этокастомные шаблоны которые мы можем добавлять не трогая код валидатора
+        this.pattern = pattern; // это кастомные шаблоны которые мы можем добавлять не трогая код валидатора
         this.method = method; // настройки которые будут указывать какие именно поля должны проходить валидацию и какие свойства должны к ним применяться
         this.elementsForm = [...this.form.elements].filter(item => {
             return item.tagName.toLowerCase() !== 'button' && item.type !== 'button';
@@ -14,6 +14,7 @@ class Validator {
     init() {
         this.applyStyle();
         this.setPattern();
+        console.log(this.elementsForm);
         this.elementsForm.forEach(item => item.addEventListener('change', this.chekIt.bind(this)));
         this.form.addEventListener('submit', e => {
             this.elementsForm.forEach(elem => this.chekIt({ target: elem }));
@@ -63,6 +64,8 @@ class Validator {
 
 
     showError(elem) {
+        
+        
         elem.classList.remove('success')
         elem.classList.add('error')
         if (elem.nextElementSibling && elem.nextElementSibling.classList.contains('validatot-error')) {
