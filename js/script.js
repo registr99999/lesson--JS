@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         timeRemaining = (dateStop - dateNow) / 1000,
         seconds = Math.floor(timeRemaining % 60),
         minutes = Math.floor((timeRemaining / 60) % 60),
-        hours = Math.floor(timeRemaining / 60 / 60) % 24;
+        hours = Math.floor(timeRemaining / 60 / 60 - 3) % 24;
       return { timeRemaining, hours, minutes, seconds };
     }
 
