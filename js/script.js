@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         timeRemaining = (dateStop - dateNow) / 1000,
         seconds = Math.floor(timeRemaining % 60),
         minutes = Math.floor((timeRemaining / 60) % 60),
-        hours = Math.floor(timeRemaining / 60 / 60) % 24;
+        hours = Math.floor(timeRemaining / 60 / 60 - 3) % 24;
       return { timeRemaining, hours, minutes, seconds };
     }
 
@@ -277,23 +277,23 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
 
   slider();
 
-// -------------------------------------------   calculeted   ------------------------------------------------
+  // -------------------------------------------   calculeted   ------------------------------------------------
   const calc = (price = 100) => {
-    const  calcBlock = document.querySelector('.calc-block'),
-          calcType = document.querySelector('.calc-type'),
-          calcSquare = document.querySelector('.calc-square'),
-          calcDay = document.querySelector('.calc-day'),
-          calcCount = document.querySelector('.calc-count'),
-          totalValue = document.getElementById('total');
+    const calcBlock = document.querySelector('.calc-block'),
+      calcType = document.querySelector('.calc-type'),
+      calcSquare = document.querySelector('.calc-square'),
+      calcDay = document.querySelector('.calc-day'),
+      calcCount = document.querySelector('.calc-count'),
+      totalValue = document.getElementById('total');
 
     const constSum = () => {
       let total = 0,
-      countValue = 1,
-      dayValue = 1;
+        countValue = 1,
+        dayValue = 1;
       totalValue.textContent = 10;
       const typeValue = calcType.options[calcType.selectedIndex].value,
-            squareValue = +calcSquare.value;
-      
+        squareValue = +calcSquare.value;
+
       if (calcCount.value > 1) {
         countValue += (calcCount.value - 1) / 10;
       }
@@ -304,7 +304,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
       }
       if (typeValue && squareValue) {
         total = price * typeValue * squareValue * countValue * dayValue;
-      } 
+      }
       const start = setInterval(() => {
         totalValue.textContent = Number(totalValue.textContent) + Number(total * .1);
         if (totalValue.textContent >= total) {
@@ -314,28 +314,141 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
       start();
       totalValue.textContent = total;
     };
-    
-    calcBlock.addEventListener('change', ({target}) => {
+
+    calcBlock.addEventListener('change', ({ target }) => {
       if (target === calcType || target === calcSquare || target === calcDay || target === calcCount) {
         constSum();
       }
     });
   }
   calc();
-});
-/* const text = document.getElementById('text');
-const btn = document.getElementById('btn');
 
-text.innerHTML = 0;
-btn.addEventListener('click', (e) => {
-  text.innerHTML = 0;
-  e.preventDefault();
-  const start = setInterval(() => {
-    text.innerHTML = Number(text.innerHTML) + Number(15);
-    if (text.innerHTML >= 300) {
-      clearInterval(start);
+  // -------------------------------------------   sebd-ajax-form   ------------------------------------------------
+
+  const sendForm = () => {
+    const errorMessage = 'Что то пошло не так!';
+    const loadMessage = 'Загрузка...';
+    const successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
+
+    const form1 = document.getElementById('form1');
+    const form2 = document.getElementById('form2');
+    const form3 = document.getElementById('form3');
+    const formName = document.querySelectorAll('.form-name');
+    const formEmail = document.querySelectorAll('.form-email');
+    const formPhone = document.querySelectorAll('.form-phone');
+
+    formName.forEach(item => {
+      item.addEventListener('input', () => {
+        if (/[^a-z]/gi.test(item.value)) {
+          
+        } else {
+          item.value = '';
+        }
+        
+      })
+    })
+    formEmail.forEach(item => {
+      item.addEventListener('change', () => {
+        if (/(\w+)@(\w+)\.\w{2,3}/gi.test(item.value)) {
+          
+        } else {
+          item.value = '';
+        }
+        
+      })
+    })
+    formPhone.forEach(item => {
+      item.addEventListener('input', () => {
+        if (/[+0-9]{0,11}$/.test(item.value)) {
+        } else {
+          item.value = '';
+        }
+        
+      })
+    })
+
+    const statusMessage = document.createElement('div');
+    statusMessage.style.cssText = 'font-size: 2rem;'
+
+    form1.addEventListener('submit', (event) => {
+      event.preventDefault();
+      formName.forEach(item => {
+        item.value = '';
+      })
+      formEmail.forEach(item => {
+        item.value = '';
+      })
+      formPhone.forEach(item => {
+        item.value = '';
+      })
+      form1.appendChild(statusMessage);
+      statusMessage.textContent = loadMessage;
+      const formData = new FormData(form1);
+      let body = {};
+      formData.forEach((val, key) => {
+        body[key] = val;
+      });
+      postSata(body, () => {
+        statusMessage.textContent = successMessage;
+      }, (error) => {
+        statusMessage.textContent = errorMessage;
+        console.error(error);
+      });
+
+    });
+    form2.addEventListener('submit', (event) => {
+      event.preventDefault();
+      form2.appendChild(statusMessage);
+
+      statusMessage.textContent = loadMessage;
+      const formData = new FormData(form2);
+      let body = {};
+      formData.forEach((val, key) => {
+        body[key] = val;
+      });
+      postSata(body, () => {
+        statusMessage.textContent = successMessage;
+      }, (error) => {
+        statusMessage.textContent = errorMessage;
+        console.error(error);
+      });
+
+    });
+    form3.addEventListener('submit', (event) => {
+      event.preventDefault();
+      form3.appendChild(statusMessage);
+
+      statusMessage.textContent = loadMessage;
+      const formData = new FormData(form3);
+      let body = {};
+      formData.forEach((val, key) => {
+        body[key] = val;
+      });
+      postSata(body, () => {
+        statusMessage.textContent = successMessage;
+      }, (error) => {
+        statusMessage.textContent = errorMessage;
+        console.error(error);
+      });
+
+    });
+    const postSata = (body, outputData, errorData) => {
+      const request = new XMLHttpRequest();
+      request.addEventListener('readystatechange', () => {
+        if (request.readyState !== 4) {
+          return;
+        }
+        if (request.status === 200) {
+          outputData();
+        } else {
+          errorData(request.status);
+        }
+      });
+      request.open('POST', 'server.php');
+      request.setRequestHeader('Content-Type', 'application/json');
+      request.send(JSON.stringify(body));
     }
-  }, 30);
-  start();
+  }
+  sendForm();
 });
- */
+
