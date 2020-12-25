@@ -336,35 +336,44 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
     const formName = document.querySelectorAll('.form-name');
     const formEmail = document.querySelectorAll('.form-email');
     const formPhone = document.querySelectorAll('.form-phone');
+    const formTextArea = document.getElementById('form2-message');
 
     formName.forEach(item => {
       item.addEventListener('input', () => {
         if (/[^a-z]/gi.test(item.value)) {
-          
+
         } else {
           item.value = '';
         }
-        
+
       })
     })
     formEmail.forEach(item => {
       item.addEventListener('change', () => {
         if (/(\w+)@(\w+)\.\w{2,3}/gi.test(item.value)) {
-          
+
         } else {
           item.value = '';
         }
-        
+
       })
     })
     formPhone.forEach(item => {
+      item.setAttribute('maxlength', '11');
       item.addEventListener('input', () => {
-        if (/[+0-9]{0,11}$/.test(item.value)) {
+        if (/^\+?(7|8)\d{0,11}$/.test(item.value)) {
+
         } else {
           item.value = '';
         }
-        
+
       })
+    })
+    formTextArea.addEventListener('input', () => {
+      if (/[^a-z]$/gi.test(formTextArea.value)) {
+      } else {
+        formTextArea.value = '';
+      }
     })
 
     const statusMessage = document.createElement('div');
@@ -399,7 +408,15 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
     form2.addEventListener('submit', (event) => {
       event.preventDefault();
       form2.appendChild(statusMessage);
-
+      formName.forEach(item => {
+        item.value = '';
+      })
+      formEmail.forEach(item => {
+        item.value = '';
+      })
+      formPhone.forEach(item => {
+        item.value = '';
+      })
       statusMessage.textContent = loadMessage;
       const formData = new FormData(form2);
       let body = {};
@@ -417,8 +434,17 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
     form3.addEventListener('submit', (event) => {
       event.preventDefault();
       form3.appendChild(statusMessage);
+      formName.forEach(item => {
+        item.value = '';
+      })
+      formEmail.forEach(item => {
+        item.value = '';
+      })
+      formPhone.forEach(item => {
+        item.value = '';
+      })
 
-      statusMessage.textContent = loadMessage;
+      statusMessage.style.cssText = 'color: #ffffff;'
       const formData = new FormData(form3);
       let body = {};
       formData.forEach((val, key) => {
