@@ -37,7 +37,6 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         clearInterval(updateClock);
       }
     }, 1000);
-
   }
   countTimer('2022-12-31');
 
@@ -329,6 +328,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
     const errorMessage = 'Что то пошло не так!';
     const loadMessage = 'Загрузка...';
     const successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
+    const validMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
 
     const form1 = document.getElementById('form1');
     const form2 = document.getElementById('form2');
@@ -337,6 +337,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
     const formEmail = document.querySelectorAll('.form-email');
     const formPhone = document.querySelectorAll('.form-phone');
     const formTextArea = document.getElementById('form2-message');
+
 
     formName.forEach(item => {
       item.addEventListener('input', () => {
@@ -381,82 +382,94 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
 
     form1.addEventListener('submit', (event) => {
       event.preventDefault();
-      formName.forEach(item => {
-        item.value = '';
-      })
-      formEmail.forEach(item => {
-        item.value = '';
-      })
-      formPhone.forEach(item => {
-        item.value = '';
-      })
-      form1.appendChild(statusMessage);
-      statusMessage.textContent = loadMessage;
-      const formData = new FormData(form1);
-      let body = {};
-      formData.forEach((val, key) => {
-        body[key] = val;
-      });
-      postSata(body, () => {
-        statusMessage.textContent = successMessage;
-      }, (error) => {
-        statusMessage.textContent = errorMessage;
-        console.error(error);
-      });
+      if (formName[0].value !== '' && formEmail[0].value !== '' && formPhone[0].value !== '') {
+        form1.appendChild(statusMessage);
+        statusMessage.textContent = loadMessage;
+        const formData = new FormData(form1);
+        let body = {};
+        formData.forEach((val, key) => {
+          body[key] = val;
+        });
+        let count = 0;
+
+        postSata(body, () => {
+          statusMessage.textContent = successMessage;
+        }, (error) => {
+          statusMessage.textContent = errorMessage;
+          console.error(error);
+        });
+        const removeMessage = setInterval(() => {
+          count++;
+          console.log(count);
+          if (count >= 5) {
+            clearInterval(removeMessage);
+            statusMessage.textContent = '';
+          }
+        }, 1000);
+        
+        form1.reset();
+        
+        
+      }
+
 
     });
     form2.addEventListener('submit', (event) => {
       event.preventDefault();
-      form2.appendChild(statusMessage);
-      formName.forEach(item => {
-        item.value = '';
-      })
-      formEmail.forEach(item => {
-        item.value = '';
-      })
-      formPhone.forEach(item => {
-        item.value = '';
-      })
-      statusMessage.textContent = loadMessage;
-      const formData = new FormData(form2);
-      let body = {};
-      formData.forEach((val, key) => {
-        body[key] = val;
-      });
-      postSata(body, () => {
-        statusMessage.textContent = successMessage;
-      }, (error) => {
-        statusMessage.textContent = errorMessage;
-        console.error(error);
-      });
-
+      if (formName[1].value !== '' && formEmail[1].value !== '' && formPhone[1].value !== '') {
+        form2.appendChild(statusMessage);
+        statusMessage.textContent = loadMessage;
+        const formData = new FormData(form2);
+        let body = {};
+        formData.forEach((val, key) => {
+          body[key] = val;
+        });
+        postSata(body, () => {
+          statusMessage.textContent = successMessage;
+        }, (error) => {
+          statusMessage.textContent = errorMessage;
+          console.error(error);
+        });
+        let count = 0;
+        const removeMessage = setInterval(() => {
+          count++;
+          console.log(count);
+          if (count >= 5) {
+            clearInterval(removeMessage);
+            statusMessage.textContent = '';
+          }
+        }, 1000);
+        form2.reset();
+      }
     });
     form3.addEventListener('submit', (event) => {
       event.preventDefault();
-      form3.appendChild(statusMessage);
-      formName.forEach(item => {
-        item.value = '';
-      })
-      formEmail.forEach(item => {
-        item.value = '';
-      })
-      formPhone.forEach(item => {
-        item.value = '';
-      })
+      if (formName[2].value !== '' && formEmail[2].value !== '' && formPhone[2].value !== '') {
+        statusMessage.style.cssText = 'color: #ffffff;';
+        form3.appendChild(statusMessage);
 
-      statusMessage.style.cssText = 'color: #ffffff;'
-      const formData = new FormData(form3);
-      let body = {};
-      formData.forEach((val, key) => {
-        body[key] = val;
-      });
-      postSata(body, () => {
-        statusMessage.textContent = successMessage;
-      }, (error) => {
-        statusMessage.textContent = errorMessage;
-        console.error(error);
-      });
-
+        const formData = new FormData(form3);
+        let body = {};
+        formData.forEach((val, key) => {
+          body[key] = val;
+        });
+        postSata(body, () => {
+          statusMessage.textContent = successMessage;
+        }, (error) => {
+          statusMessage.textContent = errorMessage;
+          console.error(error);
+        });
+        let count = 0;
+        const removeMessage = setInterval(() => {
+          count++;
+          console.log(count);
+          if (count >= 5) {
+            clearInterval(removeMessage);
+            statusMessage.textContent = '';
+          }
+        }, 1000);
+        form3.reset();
+      }
     });
     const postSata = (body, outputData, errorData) => {
       const request = new XMLHttpRequest();
@@ -467,6 +480,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         if (request.status === 200) {
           outputData();
         } else {
+
           errorData(request.status);
         }
       });
