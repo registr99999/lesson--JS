@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         timerSeconds.textContent = addZero(0);
         clearInterval(updateClock);
       }
-    }, 1000);
+    }, 10);
   }
   countTimer('2022-12-31');
 
@@ -45,14 +45,14 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
     const btnMenu = document.querySelector('.menu');
     const menu = document.querySelector('menu');
     const menuItems = menu.querySelectorAll('ul>li>a');
-
+    const btnClose = document.querySelector('.close-btn');
 
     const handleToggle = () => {
       menu.classList.toggle('active-menu');
     }
 
     const handleClick = ({ target }) => {
-      if (target === menuItems || target.closest('div') === btnMenu) {
+      if (target === menuItems || target.closest('div') === btnMenu || target === btnClose) {
         handleToggle();
         return;
       } else if (target) {
@@ -328,7 +328,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
     const errorMessage = 'Что то пошло не так!';
     const loadMessage = 'Загрузка...';
     const successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
-    const validMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
+
 
     const form1 = document.getElementById('form1');
     const form2 = document.getElementById('form2');
@@ -340,42 +340,34 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
 
 
     formName.forEach(item => {
-      item.addEventListener('input', () => {
-        if (/[^a-z]/gi.test(item.value)) {
-
-        } else {
-          item.value = '';
-        }
-
-      })
+      item.addEventListener('input', function () {
+        this.value = this.value.replace(/[^а-яё\s]/ig, '');
+      });
     })
     formEmail.forEach(item => {
       item.addEventListener('change', () => {
         if (/(\w+)@(\w+)\.\w{2,3}/gi.test(item.value)) {
-
+          item.setAttribute('placeholder', 'E-mail')
         } else {
+          item.setAttribute('placeholder', 'не правильно заполнено поле!')
           item.value = '';
         }
-
       })
     })
     formPhone.forEach(item => {
       item.setAttribute('maxlength', '11');
       item.addEventListener('input', () => {
         if (/^\+?(7|8)\d{0,11}$/.test(item.value)) {
-
         } else {
           item.value = '';
         }
-
       })
     })
-    formTextArea.addEventListener('input', () => {
-      if (/[^a-z]$/gi.test(formTextArea.value)) {
-      } else {
-        formTextArea.value = '';
-      }
-    })
+
+    formTextArea.addEventListener('input', function () {
+      this.value = this.value.replace(/[^а-яё\s0-9.,]/ig, '');
+    });
+
 
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem;'
@@ -401,15 +393,12 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         const removeMessage = setInterval(() => {
           count++;
           console.log(count);
-          if (count >= 5) {
-            clearInterval(removeMessage);
-            statusMessage.textContent = '';
-          }
         }, 1000);
-        
+        if (count <= 3) {
+          clearInterval(removeMessage);
+          statusMessage.textContent = '';
+        }
         form1.reset();
-        
-        
       }
 
 
