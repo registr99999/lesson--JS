@@ -332,7 +332,6 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
     const loadMessage = 'Загрузка...';
     const successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
 
-
     const form1 = document.getElementById('form1');
     const form2 = document.getElementById('form2');
     const form3 = document.getElementById('form3');
@@ -386,21 +385,28 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         formData.forEach((val, key) => {
           body[key] = val;
         });
-        postSata(body, () => {
+        postSata(body)
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new Error('status network not 200');
+          }
           statusMessage.textContent = successMessage;
-        }, (error) => {
+        })
+        .catch ((error) => {
           statusMessage.textContent = errorMessage;
           console.error(error);
         });
         let count = 0;
-        const removeMessage = setInterval(() => {
+        let HideMessageAnimate;
+        const removeMessage = () => {
+          HideMessageAnimate = requestAnimationFrame(removeMessage);
           count++;
-          console.log(count);
-          if (count >= 5) {
-            clearInterval(removeMessage);
+          if (count >= 250) {
+            cancelAnimationFrame(HideMessageAnimate);
             statusMessage.textContent = '';
           }
-        }, 1000);
+        };
+        HideMessageAnimate = requestAnimationFrame(removeMessage);
         form1.reset();
       }
     });
@@ -414,22 +420,29 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         formData.forEach((val, key) => {
           body[key] = val;
         });
-        postSata(body, () => {
+        postSata(body)
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new Error('status network not 200');
+          }
           statusMessage.textContent = successMessage;
-        }, (error) => {
+        })
+        .catch ((error) => {
           statusMessage.textContent = errorMessage;
           console.error(error);
         });
 
         let count = 0;
-        const removeMessage = setInterval(() => {
+        let HideMessageAnimate;
+        const removeMessage = () => {
+          HideMessageAnimate = requestAnimationFrame(removeMessage);
           count++;
-          console.log(count);
-          if (count >= 5) {
-            clearInterval(removeMessage);
+          if (count >= 250) {
+            cancelAnimationFrame(HideMessageAnimate);
             statusMessage.textContent = '';
           }
-        }, 1000);
+        };
+        HideMessageAnimate = requestAnimationFrame(removeMessage);
         form2.reset();
       }
     });
@@ -444,42 +457,41 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         formData.forEach((val, key) => {
           body[key] = val;
         });
-        postSata(body, () => {
+        
+        postSata(body)
+        .then((response) => {
+          if (response.status !== 200) {
+            throw new Error('status network not 200');
+          }
           statusMessage.textContent = successMessage;
-        }, (error) => {
+        })
+        .catch ((error) => {
           statusMessage.textContent = errorMessage;
           console.error(error);
         });
+
         let count = 0;
-        const removeMessage = setInterval(() => {
+        let HideMessageAnimate;
+        const removeMessage = () => {
+          HideMessageAnimate = requestAnimationFrame(removeMessage);
           count++;
-          console.log(count);
-          if (count >= 5) {
-            clearInterval(removeMessage);
+          if (count >= 250) {
+            cancelAnimationFrame(HideMessageAnimate);
             statusMessage.textContent = '';
           }
-        }, 1000);
+        };
+        HideMessageAnimate = requestAnimationFrame(removeMessage);
         form3.reset();
       }
     });
     const postSata = (body) => {
-      return new Promise((resolve, project) => {
-        const request = new XMLHttpRequest();
-        request.addEventListener('readystatechange', () => {
-          if (request.readyState !== 4) {
-            return;
-          }
-          if (request.status === 200) {
-            resolve(statusMessage.textContent = successMessage);
-          } else {
-            project(request.status);
-          }
-        });
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-Type', 'application/json');
-        request.send(JSON.stringify(body));
-      })
-
+      return fetch('server.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
     }
   }
   sendForm();
