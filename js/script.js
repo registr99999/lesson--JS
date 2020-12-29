@@ -23,8 +23,9 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         hours = Math.floor(timeRemaining / 60 / 60 - 3) % 24;
       return { timeRemaining, hours, minutes, seconds };
     }
-
-    const updateClock = setInterval(() => {
+    let taimetIntervel;
+    const timeAnimations = () => {
+      taimetIntervel = requestAnimationFrame(timeAnimations);
       let timer = getTimeRemaining();
       if (timer.timeRemaining > 0) {
         timerHourse.textContent = addZero(timer.hours * 1);
@@ -34,9 +35,10 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         timerHourse.textContent = addZero(0);
         timerMinutes.textContent = addZero(0);
         timerSeconds.textContent = addZero(0);
-        clearInterval(updateClock);
+        cancelAnimationFrame(taimetIntervel);
       }
-    }, 10);
+    };
+    taimetIntervel = requestAnimationFrame(timeAnimations);
   }
   countTimer('2022-12-31');
 
@@ -304,14 +306,15 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
       if (typeValue && squareValue) {
         total = price * typeValue * squareValue * countValue * dayValue;
       }
-      const start = setInterval(() => {
-        totalValue.textContent = Number(totalValue.textContent) + Number(total * .1);
-        if (totalValue.textContent >= total) {
-          clearInterval(start);
+      let numberInterval;
+      const numberAnimate = () => {
+        numberInterval = requestAnimationFrame(numberAnimate);  
+        totalValue.textContent = Math.floor(Number(totalValue.textContent) + (total * .1));     
+        if (Number(totalValue.textContent) >= total) {
+          cancelAnimationFrame(numberInterval);
         }
-      }, 30);
-      start();
-      totalValue.textContent = total;
+      };
+      numberInterval = requestAnimationFrame(numberAnimate);
     };
 
     calcBlock.addEventListener('change', ({ target }) => {
@@ -321,7 +324,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
     });
   }
   calc();
-  
+
   // -------------------------------------------   sebd-ajax-form   ------------------------------------------------
 
   const sendForm = () => {
@@ -417,7 +420,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
           statusMessage.textContent = errorMessage;
           console.error(error);
         });
-        
+
         let count = 0;
         const removeMessage = setInterval(() => {
           count++;
@@ -460,7 +463,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
       }
     });
     const postSata = (body) => {
-      return new Promise ((resolve, project) => {
+      return new Promise((resolve, project) => {
         const request = new XMLHttpRequest();
         request.addEventListener('readystatechange', () => {
           if (request.readyState !== 4) {
@@ -476,7 +479,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         request.setRequestHeader('Content-Type', 'application/json');
         request.send(JSON.stringify(body));
       })
-      
+
     }
   }
   sendForm();
