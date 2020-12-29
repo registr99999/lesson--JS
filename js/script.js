@@ -321,7 +321,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
     });
   }
   calc();
-
+  
   // -------------------------------------------   sebd-ajax-form   ------------------------------------------------
 
   const sendForm = () => {
@@ -377,7 +377,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
       if (formName[0].value !== '' && formEmail[0].value !== '' && formPhone[0].value !== '') {
         statusMessage.style.cssText = 'color: #ffffff;';
         form1.appendChild(statusMessage);
-
+        statusMessage.textContent = loadMessage;
         const formData = new FormData(form1);
         let body = {};
         formData.forEach((val, key) => {
@@ -417,6 +417,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
           statusMessage.textContent = errorMessage;
           console.error(error);
         });
+        
         let count = 0;
         const removeMessage = setInterval(() => {
           count++;
@@ -434,7 +435,7 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
       if (formName[1].value !== '' && formEmail[2].value !== '' && formPhone[2].value !== '') {
         statusMessage.style.cssText = 'color: #ffffff;';
         form3.appendChild(statusMessage);
-
+        statusMessage.textContent = loadMessage;
         const formData = new FormData(form3);
         let body = {};
         formData.forEach((val, key) => {
@@ -458,22 +459,24 @@ window.addEventListener('DOMContentLoaded', () => { // DOMContentLoaded он д�
         form3.reset();
       }
     });
-    const postSata = (body, outputData, errorData) => {
-      const request = new XMLHttpRequest();
-      request.addEventListener('readystatechange', () => {
-        if (request.readyState !== 4) {
-          return;
-        }
-        if (request.status === 200) {
-          outputData();
-        } else {
-
-          errorData(request.status);
-        }
-      });
-      request.open('POST', 'server.php');
-      request.setRequestHeader('Content-Type', 'application/json');
-      request.send(JSON.stringify(body));
+    const postSata = (body) => {
+      return new Promise ((resolve, project) => {
+        const request = new XMLHttpRequest();
+        request.addEventListener('readystatechange', () => {
+          if (request.readyState !== 4) {
+            return;
+          }
+          if (request.status === 200) {
+            resolve(statusMessage.textContent = successMessage);
+          } else {
+            project(request.status);
+          }
+        });
+        request.open('POST', 'server.php');
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.send(JSON.stringify(body));
+      })
+      
     }
   }
   sendForm();
