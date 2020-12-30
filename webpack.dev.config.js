@@ -2,10 +2,16 @@ const path = require('path');
 module.exports = {
     entry: './src/index.js',
     output: {
-        filename: 'bundel.js',
+        filename: 'dev-bundel.js',
         path: path.resolve(__dirname, './dist')
     },
     mode: 'development',
+    devServer: {
+        open: true,
+        port: 8080,
+        hot: true,
+        writeToDisk: true,
+    },
     module: {
         rules: [
             {
@@ -13,7 +19,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['$babel/env']
+                        presets: ['@babel/env']
                     },
                 },
                 exclude: /node_modules/,

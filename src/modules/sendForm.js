@@ -14,7 +14,7 @@ const sendForm = () => {
 
     formName.forEach(item => {
         item.addEventListener('input', function () {
-            this.value = this.value.replace(/[^а-яё\s]/ig, '');
+            this.value = this.value.replace(/[^а-яё\s{2}]/ig, '');
         });
     })
     formEmail.forEach(item => {
