@@ -1,4 +1,4 @@
-  const sendForm = () => {
+ const sendForm = () => {
     const errorMessage = 'Что то пошло не так!';
     const loadMessage = 'Загрузка...';
     const successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
@@ -69,10 +69,19 @@
         }
       })
     })
-
     formTextArea.addEventListener('input', function () {
       this.value = this.value.replace(/[^а-яё\s0-9.,]/ig, '');
+      if (this.value.length <= 0) {
+        this.setCustomValidity("поле не должно быть пустым");
+        this.reportValidity();
+      } else if (this.value.length < 10) {
+        this.setCustomValidity("имя должно быть не меенее 10 символов");
+        this.reportValidity();
+      } else {
+        this.setCustomValidity("");
+      }
     });
+
 
 
     const statusMessage = document.createElement('div');
@@ -185,5 +194,4 @@
 
     }
   }
-
 export default sendForm;
