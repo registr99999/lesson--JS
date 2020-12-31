@@ -1,8 +1,10 @@
+
 const sendForm = () => {
     const errorMessage = 'Что то пошло не так!';
     const loadMessage = 'Загрузка...';
     const successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
 
+    const forms = document.getElementsByTagName('form');
     const form1 = document.getElementById('form1');
     const form2 = document.getElementById('form2');
     const form3 = document.getElementById('form3');
@@ -11,28 +13,40 @@ const sendForm = () => {
     const formPhone = document.querySelectorAll('.form-phone');
     const formNameId = document.getElementById('form2-name');
     const formTextArea = document.getElementById('form2-message');
+    console.log(forms);
 
     formName.forEach(item => {
         item.addEventListener('input', function () {
-            this.value = this.value.replace(/[^а-яё\s{2}]/ig, '');
+            this.value = this.value.replace(/[^а-яё\s]/ig, '');
         });
     })
     formEmail.forEach(item => {
-        item.addEventListener('change', () => {
-            if (/(\w+)@(\w+)\.\w{2,3}/gi.test(item.value)) {
-                item.setAttribute('placeholder', 'E-mail')
+
+        item.addEventListener('input', () => {
+            if (item.value <= 0) {
+                item.setCustomValidity("поле не должно быть пустым");
+                item.reportValidity();
+            } else if (/(\w+)@(\w+)\.\w{2,3}/gi.test(item.value)) {
+                item.setCustomValidity("");
+                return
             } else {
-                item.setAttribute('placeholder', 'не правильно заполнено поле!')
-                item.value = '';
+                item.setCustomValidity("введите имя @ домен . регион");
+                item.reportValidity();
             }
         })
     })
     formPhone.forEach(item => {
         item.setAttribute('maxlength', '11');
         item.addEventListener('input', () => {
-            if (/^\+?(7|8)\d{0,11}$/.test(item.value)) {
+            if (/^\+?(7|8)\d{7,11}$/.test(item.value)) {
+                item.setCustomValidity("");
+            } else if (item.value <= 0) {
+                item.setCustomValidity("поле не должно быть пустым");
+                item.reportValidity();
             } else {
-                item.value = '';
+                item.setCustomValidity("формат  89991110011");
+                item.reportValidity();
+
             }
         })
     })
@@ -56,28 +70,21 @@ const sendForm = () => {
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postSata(body)
-                .then((response) => {
-                    if (response.status !== 200) {
-                        throw new Error('status network not 200');
-                    }
-                    statusMessage.textContent = successMessage;
-                })
-                .catch((error) => {
-                    statusMessage.textContent = errorMessage;
-                    console.error(error);
-                });
+            postSata(body, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
             let count = 0;
-            let HideMessageAnimate;
-            const removeMessage = () => {
-                HideMessageAnimate = requestAnimationFrame(removeMessage);
+            const removeMessage = setInterval(() => {
                 count++;
-                if (count >= 250) {
-                    cancelAnimationFrame(HideMessageAnimate);
+                console.log(count);
+                if (count >= 5) {
+                    clearInterval(removeMessage);
                     statusMessage.textContent = '';
                 }
-            };
-            HideMessageAnimate = requestAnimationFrame(removeMessage);
+            }, 1000);
             form1.reset();
         }
     });
@@ -91,29 +98,22 @@ const sendForm = () => {
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-            postSata(body)
-                .then((response) => {
-                    if (response.status !== 200) {
-                        throw new Error('status network not 200');
-                    }
-                    statusMessage.textContent = successMessage;
-                })
-                .catch((error) => {
-                    statusMessage.textContent = errorMessage;
-                    console.error(error);
-                });
+            postSata(body, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
 
             let count = 0;
-            let HideMessageAnimate;
-            const removeMessage = () => {
-                HideMessageAnimate = requestAnimationFrame(removeMessage);
+            const removeMessage = setInterval(() => {
                 count++;
-                if (count >= 250) {
-                    cancelAnimationFrame(HideMessageAnimate);
+                console.log(count);
+                if (count >= 5) {
+                    clearInterval(removeMessage);
                     statusMessage.textContent = '';
                 }
-            };
-            HideMessageAnimate = requestAnimationFrame(removeMessage);
+            }, 1000);
             form2.reset();
         }
     });
@@ -128,41 +128,42 @@ const sendForm = () => {
             formData.forEach((val, key) => {
                 body[key] = val;
             });
-
-            postSata(body)
-                .then((response) => {
-                    if (response.status !== 200) {
-                        throw new Error('status network not 200');
-                    }
-                    statusMessage.textContent = successMessage;
-                })
-                .catch((error) => {
-                    statusMessage.textContent = errorMessage;
-                    console.error(error);
-                });
-
+            postSata(body, () => {
+                statusMessage.textContent = successMessage;
+            }, (error) => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
             let count = 0;
-            let HideMessageAnimate;
-            const removeMessage = () => {
-                HideMessageAnimate = requestAnimationFrame(removeMessage);
+            const removeMessage = setInterval(() => {
                 count++;
-                if (count >= 250) {
-                    cancelAnimationFrame(HideMessageAnimate);
+                console.log(count);
+                if (count >= 5) {
+                    clearInterval(removeMessage);
                     statusMessage.textContent = '';
                 }
-            };
-            HideMessageAnimate = requestAnimationFrame(removeMessage);
+            }, 1000);
             form3.reset();
         }
     });
     const postSata = (body) => {
-        return fetch('server.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        });
+        return new Promise((resolve, project) => {
+            const request = new XMLHttpRequest();
+            request.addEventListener('readystatechange', () => {
+                if (request.readyState !== 4) {
+                    return;
+                }
+                if (request.status === 200) {
+                    resolve(statusMessage.textContent = successMessage);
+                } else {
+                    project(request.status);
+                }
+            });
+            request.open('POST', 'server.php');
+            request.setRequestHeader('Content-Type', 'application/json');
+            request.send(JSON.stringify(body));
+        })
+
     }
 }
 
