@@ -16,19 +16,38 @@ const sendForm = () => {
     console.log(forms);
 
     formName.forEach(item => {
+
         item.addEventListener('input', function () {
             this.value = this.value.replace(/[^а-яё\s]/ig, '');
+            if (item.value.length < 2) {
+                item.setCustomValidity("имя должно быть не меенее 2х символов");
+                item.reportValidity();
+            } else {
+                item.setCustomValidity("");
+            }
         });
     })
+
+    formNameId.addEventListener('input', function () {
+        this.value = this.value.replace(/[^а-яё\s]/ig, '');
+        if (this.value.length < 2) {
+            this.setCustomValidity("имя должно быть не меенее 2х символов");
+            this.reportValidity();
+        } else {
+            this.setCustomValidity("");
+        }
+    });
+
     formEmail.forEach(item => {
 
         item.addEventListener('input', () => {
-            if (item.value <= 0) {
+            item.value = item.value.replace(/[^a-z@0-9\.]/ig, '');
+            if (item.value.length <= 0) {
                 item.setCustomValidity("поле не должно быть пустым");
                 item.reportValidity();
             } else if (/(\w+)@(\w+)\.\w{2,3}/gi.test(item.value)) {
                 item.setCustomValidity("");
-                return
+
             } else {
                 item.setCustomValidity("введите имя @ домен . регион");
                 item.reportValidity();
@@ -36,12 +55,13 @@ const sendForm = () => {
         })
     })
     formPhone.forEach(item => {
-        item.setAttribute('maxlength', '11');
+        item.setAttribute('maxlength', '12');
         item.addEventListener('input', () => {
+            item.value = item.value.replace(/[^0-9]$/g, '');
             if (/^\+?(7|8)\d{7,11}$/.test(item.value)) {
                 item.setCustomValidity("");
-            } else if (item.value <= 0) {
-                item.setCustomValidity("поле не должно быть пустым");
+            } else if (item.value.length <= 7) {
+                item.setCustomValidity("не менее 7 символов");
                 item.reportValidity();
             } else {
                 item.setCustomValidity("формат  89991110011");
@@ -50,9 +70,17 @@ const sendForm = () => {
             }
         })
     })
-
     formTextArea.addEventListener('input', function () {
         this.value = this.value.replace(/[^а-яё\s0-9.,]/ig, '');
+        if (this.value.length <= 0) {
+            this.setCustomValidity("поле не должно быть пустым");
+            this.reportValidity();
+        } else if (this.value.length < 10) {
+            this.setCustomValidity("имя должно быть не меенее 10 символов");
+            this.reportValidity();
+        } else {
+            this.setCustomValidity("");
+        }
     });
 
 
@@ -90,7 +118,7 @@ const sendForm = () => {
     });
     form2.addEventListener('submit', (event) => {
         event.preventDefault();
-        if (formNameId.value !== '' && formEmail[1].value !== '' && formPhone[1].value !== '') {
+        if (formNameId.value !== '' && formEmail[1].value !== '' && formPhone[1].value !== '' && formTextArea.value !== '') {
             form2.appendChild(statusMessage);
             statusMessage.textContent = loadMessage;
             const formData = new FormData(form2);
